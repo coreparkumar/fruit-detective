@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farting Fruit - AI Emotional Reframer</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'float-to-list': 'floatToList 0.7s cubic-bezier(0.25, 1, 0.50, 1) forwards',
+                        'bounce-reveal': 'bounceReveal 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+                        'fruit-shake': 'fruitShake 0.4s ease-in-out infinite',
+                        'fruit-chomp': 'fruitChomp 0.3s ease-in-out infinite',
+                        'badge-pop': 'badgePop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+                    },
+                    keyframes: {
+                        floatToList: {
+                            '0%': { transform: 'translate(0, 0) scale(0.4)', opacity: '0' },
+                            '20%': { opacity: '0.95' },
+                            '100%': { transform: 'translate(110px, -20px) scale(0.8)', opacity: '0' }
+                        },
+                        bounceReveal: {
+                            '0%': { transform: 'scale(0.3) translateY(100px)', opacity: '0' },
+                            '70%': { transform: 'scale(1.05) translateY(-10px)' },
+                            '100%': { transform: 'scale(1) translateY(0)', opacity: '1' }
+                        },
+                        badgePop: {
+                            '0%': { transform: 'translateX(30px) scale(0.7)', opacity: '0' },
+                            '100%': { transform: 'translateX(0) scale(1)', opacity: '1' }
+                        },
+                        fruitShake: {
+                            '0%, 100%': { transform: 'rotate(0deg) translateY(0)' },
+                            '25%': { transform: 'rotate(2deg) translateY(-2px)' },
+                            '75%': { transform: 'rotate(-2deg) translateY(2px)' }
+                        },
+                        fruitChomp: {
+                            '0%, 100%': { transform: 'scaleY(1)' },
+                            '50%': { transform: 'scaleY(0.85) scaleX(1.08)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .retro-readout {
+            font-family: 'VT323', monospace;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 flex items-center justify-center min-h-screen p-4 overflow-x-hidden selection:bg-emerald-500 selection:text-slate-950">
+
+    <!-- Main Mobile Application Frame (Mocking an Android Canvas) -->
+    <div class="relative w-full max-w-md bg-slate-900/90 border border-slate-800 rounded-[2.5rem] p-6 shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col justify-between min-h-[680px] overflow-hidden backdrop-blur-md">
+        
+        <!-- Background decorative ambient lights -->
+        <div class="absolute -top-12 -left-12 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-12 -right-12 w-32 h-32 bg-rose-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <!-- Header -->
+        <div class="relative z-10 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="bg-gradient-to-br from-amber-400 to-rose-500 p-2 rounded-2xl shadow-lg">
+                    <span class="text-2xl select-none leading-none">🍐</span>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight bg-gradient-to-r from-amber-400 to-rose-300 bg-clip-text text-transparent">Farting Fruit</h1>
+                    <p class="text-[10px] text-slate-400 font-mono tracking-wider">FRUITY COGNITIVE REFRAMER v2.1</p>
+                </div>
+            </div>
+            
+            <!-- OpenRouter API Settings Button -->
+            <button id="settings-btn" class="text-slate-400 hover:text-amber-400 transition-colors p-2 rounded-xl bg-slate-800/50 border border-slate-800">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- System Diagnostic Label -->
+        <div class="mt-4 flex justify-center">
+            <div class="px-4 py-1.5 rounded-full bg-slate-950 border border-slate-800 text-xs font-mono tracking-widest text-slate-500 uppercase flex items-center gap-2">
+                <span id="diagnostic-dot" class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                <span id="diagnostic-label">System Idle</span>
+            </div>
+        </div>
+
+        <!-- The Fruit & Animation Arena -->
+        <div class="relative flex-1 flex items-center justify-between min-h-[260px] gap-3 px-2">
+            
+            <!-- Dynamic Spawning Anchor for Fart Clouds (placed near Pear's posterior cleft) -->
+            <div id="fart-cloud-anchor" class="absolute left-[38%] top-[56%] w-2 h-2 pointer-events-none z-30"></div>
+
+            <!-- Left/Center Column: Pear Character SVG -->
+            <div id="fruit-character" class="w-40 h-40 transition-all duration-500 relative flex-shrink-0">
+                <svg viewBox="0 0 200 200" class="w-full h-full">
+                    <!-- Leaf & Stem Layer (Top Center) -->
+                    <g id="stem-and-leaves" transform="translate(10, 0)">
+                        <!-- Wood Stem -->
+                        <path d="M 100 40 Q 105 20 115 15" stroke="#78350f" stroke-width="6" stroke-linecap="round" fill="none" />
+                        <!-- Green Leaf -->
+                        <path d="M 100 35 Q 80 25 75 40 Q 90 42 100 35" fill="#84cc16" stroke="#4d7c0f" stroke-width="1.5" />
+                    </g>
+
+                    <!-- Pear Body (Main Group) -->
+                    <g id="pear-body" class="origin-center">
+                        <!-- Pear Body (Bulbous bottom, cleft on right cheek) -->
+                        <!-- Left cheek / Face (Light green base) -->
+                        <path d="M 100 50 C 70 50 45 90 45 135 C 45 170 80 180 100 180" fill="#a3e635" />
+                        <!-- Right cheek / Posterior cleft (Bright highlights) -->
+                        <path d="M 100 50 C 130 50 157 90 157 135 C 157 170 120 180 100 180" fill="#bef264" />
+                        
+                        <!-- Cleft Center Line Highlight -->
+                        <path d="M 100 50 Q 94 110 100 180" stroke="#65a30d" stroke-width="3" stroke-linecap="round" fill="none" />
+
+                        <!-- Face Elements Group (Positioned on the Left leaning side) -->
+                        <g id="pear-face" transform="translate(-14, 15)">
+                            <!-- Cute glowing black eyes -->
+                            <circle cx="65" cy="100" r="8" fill="#1e293b" />
+                            <circle cx="65" cy="97" r="2.5" fill="#ffffff" /> <!-- Highlight -->
+                            
+                            <circle cx="92" cy="103" r="8" fill="#1e293b" />
+                            <circle cx="92" cy="100" r="2.5" fill="#ffffff" /> <!-- Highlight -->
+
+                            <!-- Rosy Cheeks -->
+                            <circle cx="56" cy="108" r="4.5" fill="#ef4444" opacity="0.5" />
+                            <circle cx="99" cy="111" r="4.5" fill="#ef4444" opacity="0.5" />
+
+                            <!-- Dynamic Mouth -->
+                            <path id="fruit-mouth" d="M 72 118 Q 80 128 88 118" stroke="#3f6212" stroke-width="4" fill="#3f6212" stroke-linecap="round" />
+                        </g>
+
+                        <!-- Pear Speckles / Texture -->
+                        <circle cx="130" cy="95" r="1.5" fill="#e2f8a1" opacity="0.7" />
+                        <circle cx="140" cy="118" r="2" fill="#e2f8a1" opacity="0.6" />
+                        <circle cx="120" cy="135" r="1.5" fill="#e2f8a1" opacity="0.7" />
+                    </g>
+                </svg>
+            </div>
+
+            <!-- Right Column: Creative Emotion List Panel -->
+            <div id="emotion-list-panel" class="w-36 h-[200px] flex flex-col justify-start bg-slate-950/45 border border-slate-800/80 rounded-2xl p-2 relative overflow-y-auto backdrop-blur-sm shadow-inner transition-all duration-300">
+                <div class="text-[9px] font-mono font-bold text-amber-500 uppercase tracking-widest text-center border-b border-slate-800/60 pb-1 mb-1.5 select-none">
+                    Excretions Log
+                </div>
+                <!-- Dynamic List Items will slide into here -->
+                <div id="emotion-list-items" class="flex flex-col gap-1.5">
+                    <!-- Placeholder visual feedback when list is empty -->
+                    <p id="list-placeholder" class="text-[9px] font-mono text-slate-600 text-center py-8 italic select-none">
+                        Awaiting digestive cycle...
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Interactive Sarcastic Feedback Card -->
+        <div id="feedback-card" class="relative z-10 hidden my-4 transform opacity-0">
+            <!-- Speech Bubble Pointer pointing to Pear -->
+            <div class="absolute -top-3 left-1/3 w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-b-[12px] border-b-slate-850"></div>
+            
+            <div class="bg-gradient-to-b from-slate-800 to-slate-900 border border-slate-700 p-5 rounded-3xl shadow-xl">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-mono font-bold text-amber-400 tracking-wider">TRANSLATED COMEDY:</span>
+                    <span class="text-xs bg-slate-950 px-2.5 py-0.5 rounded-full border border-slate-800 text-rose-400 font-mono">100% SARCASM</span>
+                </div>
+                <p id="sarcastic-reply" class="text-sm italic text-slate-200 leading-relaxed">
+                    "Loading dynamic insult paradigm..."
+                </p>
+                <div class="mt-4 flex justify-end">
+                    <button id="copy-btn" class="flex items-center gap-1.5 text-[11px] bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 transition-all text-slate-300 px-3 py-1.5 rounded-xl">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                        </svg>
+                        <span>Copy Sarcasm</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Processing & Vent Box Zone -->
+        <div class="relative z-10 space-y-3">
+            <div id="textarea-wrapper" class="transition-all duration-1000 ease-out">
+                <textarea id="user-input" rows="3" placeholder="Vent your raw feelings... (e.g. 'My boss scheduled a meeting at 4:55 PM')" class="w-full bg-slate-950/85 text-sm p-4 rounded-3xl border border-slate-800 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all resize-none placeholder:text-slate-600 text-slate-100 shadow-inner"></textarea>
+            </div>
+            
+            <button id="submit-btn" class="w-full bg-gradient-to-r from-amber-500 to-rose-600 hover:from-amber-400 hover:to-rose-500 text-slate-950 font-bold py-4 rounded-2xl text-sm tracking-wide shadow-lg shadow-amber-950/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+                <span>Digest & Roast Me</span>
+                <span class="text-lg">🍐</span>
+            </button>
+            <button id="refresh-btn" onclick="refreshPage()" class="w-full bg-gradient-to-r from-amber-500 to-rose-600 hover:from-amber-400 hover:to-rose-500 text-slate-950 font-bold py-4 rounded-2xl text-sm tracking-wide shadow-lg shadow-amber-950/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+                <span>Feed me Again</span>
+                <span class="text-lg">🍐</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Persistent OpenRouter Settings Modal -->
+    <div id="settings-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-sm rounded-[2rem] p-6 shadow-2xl relative">
+            <button id="close-settings" class="absolute top-4 right-4 text-slate-400 hover:text-slate-100">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            
+            <h2 class="text-lg font-bold text-slate-100 mb-2 flex items-center gap-2">
+                <span>🔑</span> OpenRouter Settings
+            </h2>
+            <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+                We connect directly to OpenRouter via client-side API. Your details are cached securely in your local browser storage.
+            </p>
+
+            <label class="block text-xs font-mono text-amber-400 uppercase tracking-wider mb-1.5">Your API Key:</label>
+            <input type="password" id="api-key-input" placeholder="sk-or-v1-..." class="w-full bg-slate-950 text-xs p-3 rounded-xl border border-slate-800 focus:outline-none focus:border-amber-500 text-slate-300 font-mono mb-3">
+
+            <label class="block text-xs font-mono text-amber-400 uppercase tracking-wider mb-1.5">Model Identifier:</label>
+            <input type="text" id="api-model-input" placeholder="google/gemma-2-27b-it" class="w-full bg-slate-950 text-xs p-3 rounded-xl border border-slate-800 focus:outline-none focus:border-amber-500 text-slate-300 font-mono mb-4">
+            
+            <p class="text-[10px] text-slate-500 leading-normal mb-4">
+                Recommended models: <br>
+                • <code class="text-slate-300 select-all">google/gemma-2-27b-it</code> (Highly Recommended)<br>
+                • <code class="text-slate-300 select-all">google/gemma-2-9b-it</code> (Fast & Lighter)<br>
+                • <code class="text-slate-300 select-all">google/gemma-2-9b-it:free</code> (Free variant)
+            </p>
+
+            <button id="save-settings" class="w-full bg-amber-500 hover:bg-amber-400 transition-colors text-slate-950 font-bold py-3 rounded-xl text-xs uppercase tracking-widest">
+                Save Settings
+            </button>
+        </div>
+    </div>
+
+    <!-- Core Runtime Execution Code -->
+    <script>
+        // System Config and State Variables
+        let appState = 'IDLE'; 
+        let storedApiResponse = null;
+
+        // Core DOM References
+        const userTextArea = document.getElementById('user-input');
+        const submitBtn = document.getElementById('submit-btn');
+        const textareaWrapper = document.getElementById('textarea-wrapper');
+        const diagnosticLabel = document.getElementById('diagnostic-label');
+        const diagnosticDot = document.getElementById('diagnostic-dot');
+        const feedbackCard = document.getElementById('feedback-card');
+        const sarcasticReplyPara = document.getElementById('sarcastic-reply');
+        const copyBtn = document.getElementById('copy-btn');
+        const fartAnchor = document.getElementById('fart-cloud-anchor');
+        const fruitChar = document.getElementById('fruit-character');
+        const fruitMouth = document.getElementById('fruit-mouth');
+        const emotionListItems = document.getElementById('emotion-list-items');
+        const listPlaceholder = document.getElementById('list-placeholder');
+
+        // Settings Modal References
+        const settingsBtn = document.getElementById('settings-btn');
+        const settingsModal = document.getElementById('settings-modal');
+        const closeSettings = document.getElementById('close-settings');
+        const saveSettingsBtn = document.getElementById('save-settings');
+        const apiKeyInput = document.getElementById('api-key-input');
+        const apiModelInput = document.getElementById('api-model-input');
+
+        //Refresh Page Helper
+        function refreshPage() {
+            window.location.reload();
+        }
+
+        // Initialize Settings from Local Storage
+        window.addEventListener('load', () => {
+            const savedKey = localStorage.getItem('or_groot_key');
+            const savedModel = localStorage.getItem('or_groot_model') || 'google/gemma-2-27b-it';
+            
+            if (savedKey) {
+                apiKeyInput.value = savedKey;
+            }
+            apiModelInput.value = savedModel;
+
+            if (!savedKey) {
+                // Flash settings modal automatically on first load to aid setup
+                setTimeout(() => toggleModal(true), 600);
+            }
+        });
+
+        // Toggle Modal helper
+        function toggleModal(show) {
+            if (show) {
+                settingsModal.classList.remove('hidden');
+            } else {
+                settingsModal.classList.add('hidden');
+            }
+        }
+
+        settingsBtn.addEventListener('click', () => toggleModal(true));
+        closeSettings.addEventListener('click', () => toggleModal(false));
+        saveSettingsBtn.addEventListener('click', () => {
+            const key = apiKeyInput.value.trim();
+            const model = apiModelInput.value.trim() || 'google/gemma-2-27b-it';
+            
+            localStorage.setItem('or_groot_model', model);
+            
+            if (key) {
+                localStorage.setItem('or_groot_key', key);
+                toggleModal(false);
+                showSystemAlert('Settings updated!');
+            } else {
+                localStorage.removeItem('or_groot_key');
+                showSystemAlert('Key cleared. Enter a valid key to analyze.');
+            }
+        });
+
+        // Trigger analysis sequence
+        submitBtn.addEventListener('click', () => {
+            if (appState !== 'IDLE') return;
+            
+            const rawText = userTextArea.value.trim();
+            const apiKey = apiKeyInput.value.trim();
+
+            if (!apiKey) {
+                toggleModal(true);
+                showSystemAlert("Please set your OpenRouter API key first!");
+                return;
+            }
+
+            if (!rawText) {
+                showSystemAlert("Please vent your emotions first! The fruit needs nutrients.");
+                return;
+            }
+
+            startUIPipeline(rawText, apiKey);
+        });
+
+        // Clipboard action
+        copyBtn.addEventListener('click', () => {
+            const reply = sarcasticReplyPara.innerText;
+            
+            // Build sandbox-compliant fallback copy pipeline using a temporary textarea
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = reply;
+            tempTextArea.style.top = '0';
+            tempTextArea.style.left = '0';
+            tempTextArea.style.position = 'fixed';
+            tempTextArea.style.opacity = '0';
+            document.body.appendChild(tempTextArea);
+            
+            tempTextArea.focus();
+            tempTextArea.select();
+            
+            let successful = false;
+            try {
+                // execCommand copy is strictly allowed inside standard sandboxed configurations
+                successful = document.execCommand('copy');
+            } catch (err) {
+                console.warn('Sandbox execCommand fallback copy failed:', err);
+            }
+            
+            document.body.removeChild(tempTextArea);
+            
+            if (successful) {
+                showSystemAlert("Insult copied to clipboard!");
+            } else {
+                // Secondary check for Clipboard API to handle edge cases, wrapped cleanly to catch exceptions
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(reply)
+                        .then(() => showSystemAlert("Insult copied to clipboard!"))
+                        .catch(err => {
+                            console.error("Clipboard API failed:", err);
+                            showSystemAlert("Copy blocked by browser security. Please copy manually.");
+                        });
+                } else {
+                    showSystemAlert("Copy blocked by browser security. Please copy manually.");
+                }
+            }
+        });
+
+        // UI Notification System (Custom implementation to avoid default blocking alert)
+        function showSystemAlert(message) {
+            const alertBox = document.createElement('div');
+            alertBox.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 bg-slate-900 border border-slate-700 text-amber-400 font-mono text-[11px] px-4 py-2.5 rounded-full shadow-2xl tracking-wider z-50 transition-opacity duration-300 text-center';
+            alertBox.innerText = `💡 ${message}`;
+            document.body.appendChild(alertBox);
+            setTimeout(() => {
+                alertBox.style.opacity = '0';
+                setTimeout(() => alertBox.remove(), 300);
+            }, 3000);
+        }
+
+        // Resilient Fetch with Exponential Backoff & Customized Request Timeout
+        async function fetchWithBackoff(url, options, retries = 5, delay = 1000) {
+            try {
+                // Setup an AbortController with a generous 45-second timeout per attempt
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 45000);
+                
+                const response = await fetch(url, {
+                    ...options,
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        throw new Error("401_UNAUTHORIZED");
+                    }
+                    if (response.status === 404) {
+                        throw new Error("404_MODEL_NOT_FOUND");
+                    }
+                    if (response.status === 400) {
+                        throw new Error("400_BAD_REQUEST");
+                    }
+                    // Retry on transient status codes: rate limit (429) or server issues (5xx)
+                    if ((response.status === 429 || response.status >= 500) && retries > 0) {
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        return fetchWithBackoff(url, options, retries - 1, delay * 2);
+                    }
+                    throw new Error(`API returned error status: ${response.status}`);
+                }
+
+                return response;
+            } catch (error) {
+                if (error.message === "404_MODEL_NOT_FOUND" || error.message === "401_UNAUTHORIZED" || error.message === "400_BAD_REQUEST") {
+                    throw error;
+                }
+                // Retry on standard fetch network dropouts or timeout abort exceptions
+                if (retries > 0) {
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    return fetchWithBackoff(url, options, retries - 1, delay * 2);
+                }
+                throw error;
+            }
+        }
+
+        // Trigger State Actions sequentially
+        async function startUIPipeline(inputText, key) {
+            // Hide previous results
+            feedbackCard.classList.add('hidden');
+            feedbackCard.classList.replace('opacity-100', 'opacity-0');
+
+            // Reset dynamic emotion list
+            emotionListItems.innerHTML = '';
+            listPlaceholder.classList.remove('hidden');
+
+            // 1. CHOMPING STATE
+            setAppState('CHOMPING');
+            
+            // Textarea slowly fades to 0 opacity simulating digestion
+            textareaWrapper.style.opacity = '0';
+            textareaWrapper.style.pointerEvents = 'none';
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = '0.5';
+
+            // Trigger visual animation loops on Pear
+            fruitChar.classList.add('animate-fruit-chomp');
+            fruitMouth.setAttribute('d', 'M 66 114 Q 80 138 94 114'); // Keep mouth wide open for eating
+
+            // Start API call simultaneously so we parallelize work
+            const apiPromise = fetchGrootInsights(inputText, key);
+
+            // Wait 1.5s for eating animation cycle to finish
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            // 2. THINKING STATE
+            setAppState('THINKING');
+            fruitChar.classList.remove('animate-fruit-chomp');
+            fruitChar.classList.add('animate-fruit-shake');
+            fruitMouth.setAttribute('d', 'M 70 118 Q 80 118 90 118'); // Straight concentrated line
+
+            try {
+                const apiResult = await apiPromise;
+                if (!apiResult || !apiResult.emotions || !apiResult.reply) {
+                    throw new Error("PARSING_ERROR");
+                }
+                storedApiResponse = apiResult;
+
+                // 3. FARTING STATE
+                setAppState('FARTING');
+                fruitChar.classList.remove('animate-fruit-shake');
+                fruitMouth.setAttribute('d', 'M 72 115 Q 80 123 88 115'); // Grinning strain face
+                listPlaceholder.classList.add('hidden');
+
+                // Spawn fart cloud and add list entry slowly for each emotion returned
+                for (let i = 0; i < storedApiResponse.emotions.length; i++) {
+                    await handleEmotionFlatulence(storedApiResponse.emotions[i]);
+                    await new Promise(resolve => setTimeout(resolve, 800)); // Gap between gaseous releases
+                }
+
+                // 4. RELAXING STATE
+                setAppState('RELAXING');
+                fruitMouth.setAttribute('d', 'M 72 118 Q 80 128 88 118'); // Content smile
+                revealFinalReply(storedApiResponse.reply);
+
+            } catch (err) {
+                console.error(err);
+                if (err.message === "401_UNAUTHORIZED") {
+                    fallbackReset("Indigestion! OpenRouter returned a 401 (Unauthorized). Your API key is incorrect, expired, or out of balance. Check Settings!");
+                    setTimeout(() => toggleModal(true), 1500);
+                } else if (err.message === "404_MODEL_NOT_FOUND") {
+                    fallbackReset("Indigestion! OpenRouter returned a 404 (Model Not Found). Try opening Settings and changing the model to a free variant!");
+                    setTimeout(() => toggleModal(true), 1500);
+                } else if (err.message === "PARSING_ERROR") {
+                    fallbackReset("The fruit parsed the data but the raw wisdom was unstructured pulp. Please try re-submitting!");
+                } else {
+                    fallbackReset("The fruit experienced severe spiritual indigestion. Check your connection/API details or try another model in settings!");
+                }
+            }
+        }
+
+        // Handle State Transitions
+        function setAppState(state) {
+            appState = state;
+            
+            switch (state) {
+                case 'IDLE':
+                    diagnosticLabel.innerText = "System Idle";
+                    diagnosticDot.className = "w-2 h-2 rounded-full bg-amber-500 animate-pulse";
+                    break;
+                case 'CHOMPING':
+                    diagnosticLabel.innerText = "Chomping Text 🥬";
+                    diagnosticDot.className = "w-2 h-2 rounded-full bg-rose-400 animate-bounce";
+                    break;
+                case 'THINKING':
+                    diagnosticLabel.innerText = "Analyzing Ego 💭";
+                    diagnosticDot.className = "w-2 h-2 rounded-full bg-cyan-400 animate-pulse";
+                    break;
+                case 'FARTING':
+                    diagnosticLabel.innerText = "Excreting Stress 💨";
+                    diagnosticDot.className = "w-2 h-2 rounded-full bg-rose-500 animate-ping";
+                    break;
+                case 'RELAXING':
+                    diagnosticLabel.innerText = "Relaxed 😌";
+                    diagnosticDot.className = "w-2 h-2 rounded-full bg-amber-400";
+                    break;
+            }
+        }
+
+        // Highly robust JSON parser fallback that bypasses markdown wraps or conversational preambles
+        function extractAndParseJSON(rawText) {
+            let cleanText = rawText.trim();
+            
+            // Step 1: Strip markdown block code highlights (using hexadecimal escape \x60 to prevent parser issues)
+            const jsonBlockRegex = /\x60{3}(?:json)?\s*([\s\S]*?)\s*\x60{3}/;
+            const blockMatch = cleanText.match(jsonBlockRegex);
+            if (blockMatch) {
+                cleanText = blockMatch[1].trim();
+            }
+
+            // Step 2: Extract text between the first '{' and last '}' to prune prefix/suffix text
+            const firstCurly = cleanText.indexOf('{');
+            const lastCurly = cleanText.lastIndexOf('}');
+            if (firstCurly !== -1 && lastCurly !== -1 && lastCurly > firstCurly) {
+                cleanText = cleanText.substring(firstCurly, lastCurly + 1);
+            }
+
+            return JSON.parse(cleanText);
+        }
+
+        // OpenRouter Integration utilizing configurable Gemma or Llama
+        async function fetchGrootInsights(promptText, key) {
+            const systemInstructions = `You are a clinical psychologist mixed with a brutal insult stand-up comedian. Analyze the first-person user sentence. Your execution workflow has two strict steps:
+1. Diagnose exactly 2 to 4 distinct, precise, underlying clinical emotions/defense states embedded inside their complaint (e.g. "Ego Bruised", "Anxiety", "Passive Aggression", "Existential Dread").
+2. Formulate a brutally witty, dry, highly sarcastic response that translates their complaint into a hilarious coping-mechanism reality check.
+
+You must respond EXCLUSIVELY with a raw, valid, minified JSON object matching this schema blueprint without markdown backticks or wrappers:
+{"emotions": ["string", "string"], "reply": "string"}`;
+
+            const configuredModel = localStorage.getItem('or_groot_model') || 'google/gemma-2-27b-it';
+            const url = "https://openrouter.ai/api/v1/chat/completions";
+            
+            // Build safe HTTP Referer header depending on running protocol context
+            const safeReferer = window.location.href.startsWith('http') ? window.location.href : "https://github.com/farting-fruit";
+
+            // Attempt 1: Call standard JSON structured response setup
+            let options = {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${key}`,
+                    "Content-Type": "application/json",
+                    "HTTP-Referer": safeReferer,
+                    "X-Title": "Farting Fruit"
+                },
+                body: JSON.stringify({
+                    model: configuredModel,
+                    messages: [
+                        { "role": "system", "content": systemInstructions },
+                        { "role": "user", "content": promptText }
+                    ],
+                    response_format: { type: "json_object" }
+                })
+            };
+
+            try {
+                let response;
+                try {
+                    response = await fetchWithBackoff(url, options);
+                } catch (firstErr) {
+                    // Fallback Attempt 2: If JSON mode fails (400 Bad Request / Unsupported Schema), retry with native prompting
+                    if (firstErr.message === "400_BAD_REQUEST") {
+                        console.warn("JSON Mode not natively supported by routed provider. Retrying without json_object format...");
+                        const fallbackBody = JSON.parse(options.body);
+                        delete fallbackBody.response_format; // Remove format limitation
+                        options.body = JSON.stringify(fallbackBody);
+                        
+                        response = await fetchWithBackoff(url, options);
+                    } else {
+                        throw firstErr;
+                    }
+                }
+
+                const payload = await response.json();
+                let rawContent = payload.choices[0].message.content;
+                
+                // Sanitize and purge any markdown wrapper blocks if returned mistakenly (using safe hex escapes)
+                if (rawContent.startsWith("\x60\x60\x60")) {
+                    rawContent = rawContent.replace(/^\x60{3}(?:json)?|\x60{3}$/g, "").trim();
+                }
+
+                return extractAndParseJSON(rawContent);
+
+            } catch (error) {
+                console.error("OpenRouter endpoint connection error:", error);
+                throw error;
+            }
+        }
+
+        // Coordinates spawning and flight path from cleft directly to list panel
+        function handleEmotionFlatulence(emotionName) {
+            return new Promise((resolve) => {
+                // 1. Spawning dynamic flight-gas puff element
+                const cloudPuff = document.createElement('div');
+                cloudPuff.className = 'absolute z-40 animate-float-to-list pointer-events-none';
+                cloudPuff.style.left = `${fartAnchor.offsetLeft - 80}px`;
+                cloudPuff.style.top = `${fartAnchor.offsetTop - 45}px`;
+
+                // Vector gas puff SVG representation
+                cloudPuff.innerHTML = `
+                    <svg viewBox="0 0 100 60" class="w-10 h-7 fill-emerald-600/25 stroke-emerald-500/30 stroke-2 filter blur-[0.6px]">
+                        <path d="M 20 40 C 10 40 5 30 15 20 C 10 10 25 5 40 10 C 50 0 70 5 75 15 C 85 10 95 20 90 30 C 95 40 85 50 75 45 C 70 55 50 55 40 45 C 30 55 15 50 20 40 Z" />
+                    </svg>
+                `;
+                document.body.appendChild(cloudPuff);
+
+                // 2. Schedule list insertion slightly before puff finishes (creating perfect hit translation)
+                setTimeout(() => {
+                    // Create beautiful, permanent list badge item inside right side panel
+                    const badge = document.createElement('div');
+                    badge.className = 'flex items-center gap-1.5 bg-emerald-950/50 border border-emerald-500/30 px-2 py-1.5 rounded-xl text-[10px] font-mono text-emerald-300 font-semibold shadow-md animate-badge-pop select-none hover:border-emerald-500/50 transition-all';
+                    badge.innerHTML = `
+                        <span class="text-xs">💨</span>
+                        <span class="truncate uppercase" title="${emotionName}">${emotionName}</span>
+                    `;
+                    emotionListItems.appendChild(badge);
+                }, 400);
+
+                // 3. Remove flight puff DOM elements and resolve cycle progress
+                setTimeout(() => {
+                    cloudPuff.remove();
+                    resolve();
+                }, 700);
+            });
+        }
+
+        // Final Sarcastic Reveal Card Setup
+        function revealFinalReply(replyText) {
+            sarcasticReplyPara.innerText = `“${replyText}”`;
+            feedbackCard.classList.remove('hidden');
+            
+            // Force browser layout repaint
+            feedbackCard.offsetHeight; 
+            
+            // Add native animated CSS classes for elastic spring entry
+            feedbackCard.classList.add('animate-bounce-reveal');
+            feedbackCard.classList.replace('opacity-0', 'opacity-100');
+
+            // Re-enable interactive trigger properties
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = '1';
+        }
+
+        // Failure Fallback handler
+        function fallbackReset(errorMessage) {
+            setAppState('IDLE');
+            fruitChar.className = "w-40 h-40";
+            fruitMouth.setAttribute('d', 'M 72 118 Q 80 128 88 118');
+
+            sarcasticReplyPara.innerText = errorMessage;
+            feedbackCard.classList.remove('hidden');
+            feedbackCard.classList.replace('opacity-0', 'opacity-100');
+
+            // Restore elements
+            textareaWrapper.style.opacity = '1';
+            textareaWrapper.style.pointerEvents = 'auto';
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = '1';
+        }
+    </script>
+</body>
+</html>
