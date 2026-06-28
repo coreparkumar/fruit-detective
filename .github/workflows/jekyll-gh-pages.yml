@@ -37,7 +37,8 @@ jobs:
           destination: ./_site
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
-
+   name: Inject OpenRouter Secret
+   run: "sed -i 's/OPENROUTER_SECRET_TOKEN/${{ secrets.OPENROUTER_API_KEY }}/g' index.html"
   # Deployment job
   deploy:
     environment:
