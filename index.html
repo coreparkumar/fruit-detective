@@ -198,7 +198,7 @@
                 <span>🔑</span> OpenRouter Settings
             </h2>
             <p class="text-xs text-slate-400 mb-4 leading-relaxed">
-                We connect directly to OpenRouter via client-side API. Your details are cached securely in your local browser storage.
+                Direct OpenRouter client-side runner connectivity. Manual overrides cache to local storage.
             </p>
 
             <label class="block text-xs font-mono text-amber-400 uppercase tracking-wider mb-1.5">Your API Key:</label>
@@ -225,8 +225,8 @@
         let appState = 'IDLE'; 
         let storedApiResponse = null;
 
-        // Hardcoded Fallback API Key Configuration
-        const FALLBACK_API_KEY = "OPENROUTER_API_KEY";
+        // Automation Secret Target Placeholder (Option 1 Integration Step)
+        const FALLBACK_API_KEY = "OPENROUTER_SECRET_TOKEN";
 
         // Core DOM References
         const userTextArea = document.getElementById('user-input');
@@ -249,24 +249,26 @@
         const settingsModal = document.getElementById('settings-modal');
         const closeSettings = document.getElementById('close-settings');
         const saveSettingsBtn = document.getElementById('save-settings');
-        const apiKeyInput = FALLBACK_API_KEY;
+        const apiKeyInput = document.getElementById('api-key-input');
         const apiModelInput = document.getElementById('api-model-input');
 
-        //Refresh Page Helper
+        // Refresh Page Helper
         function refreshPage() {
             window.location.reload();
         }
 
-        // Initialize Settings from Local Storage or Default Key
+        // Initialize Settings from Local Storage or Build Secret Fallback
         window.addEventListener('load', () => {
-            const savedKey = FALLBACK_API_KEY;
+            const savedKey = localStorage.getItem('or_groot_key');
             const savedModel = localStorage.getItem('or_groot_model') || 'google/gemma-2-27b-it';
             
-            if (savedKey) {
+            // Priority assignment to form context layout
+            if (savedKey && savedKey !== "OPENROUTER_SECRET_TOKEN") {
                 apiKeyInput.value = savedKey;
-            } else {
-                // Initialize input with hardcoded system layout key if none exists
+            } else if (FALLBACK_API_KEY && FALLBACK_API_KEY !== "OPENROUTER_SECRET_TOKEN") {
                 apiKeyInput.value = FALLBACK_API_KEY;
+            } else {
+                apiKeyInput.value = "";
             }
             apiModelInput.value = savedModel;
         });
@@ -283,7 +285,7 @@
         settingsBtn.addEventListener('click', () => toggleModal(true));
         closeSettings.addEventListener('click', () => toggleModal(false));
         saveSettingsBtn.addEventListener('click', () => {
-            const key = FALLBACK_API_KEY;
+            const key = apiKeyInput.value.trim();
             const model = apiModelInput.value.trim() || 'google/gemma-2-27b-it';
             
             localStorage.setItem('or_groot_model', model);
@@ -294,7 +296,7 @@
                 showSystemAlert('Settings updated!');
             } else {
                 localStorage.removeItem('or_groot_key');
-                showSystemAlert('Key cleared. Reset to system layout.');
+                showSystemAlert('Key cleared. Resetting to system baseline.');
             }
         });
 
@@ -303,11 +305,17 @@
             if (appState !== 'IDLE') return;
             
             const rawText = userTextArea.value.trim();
-            let apiKey = FALLBACK_API_KEY;
-
-            // Fallback to hardcoded asset string if nothing is present
-            if (!apiKey) {
+            
+            // Prioritization Stack: User Override Form Input -> LocalStorage Stored Value -> Swapped CI Secret Token
+            let apiKey = apiKeyInput.value.trim() || localStorage.getItem('or_groot_key');
+            if (!apiKey || apiKey === "OPENROUTER_SECRET_TOKEN") {
                 apiKey = FALLBACK_API_KEY;
+            }
+
+            if (!apiKey || apiKey === "OPENROUTER_SECRET_TOKEN") {
+                showSystemAlert("Missing API Context. Provide a functional access token in settings.");
+                setTimeout(() => toggleModal(true), 600);
+                return;
             }
 
             if (!rawText) {
@@ -415,20 +423,14 @@
 
         // Trigger State Actions sequentially
         async function startUIPipeline(inputText, key) {
-            // Hide previous results
             feedbackCard.classList.add('hidden');
             feedbackCard.classList.replace('opacity-100', 'opacity-0');
-
-            // Save text in preview frame container immediately
             userVentPreview.innerText = inputText;
-
-            // Reset dynamic emotion list
             emotionListItems.innerHTML = '';
             listPlaceholder.classList.remove('hidden');
 
             // 1. CHOMPING STATE
             setAppState('CHOMPING');
-            
             textareaWrapper.style.opacity = '0';
             textareaWrapper.style.pointerEvents = 'none';
             submitBtn.disabled = true;
@@ -438,7 +440,6 @@
             fruitMouth.setAttribute('d', 'M 66 114 Q 80 138 94 114');
 
             const apiPromise = fetchGrootInsights(inputText, key);
-
             await new Promise(resolve => setTimeout(resolve, 1500));
 
             // 2. THINKING STATE
@@ -473,15 +474,13 @@
             } catch (err) {
                 console.error(err);
                 if (err.message === "401_UNAUTHORIZED") {
-                    fallbackReset("Indigestion! OpenRouter returned a 401 (Unauthorized). Your API key is incorrect, expired, or out of balance. Check Settings!");
-                    setTimeout(() => toggleModal(true), 1500);
+                    fallbackReset("Indigestion! OpenRouter returned 401. Your injected deployment key or cached configuration is missing/invalid.");
                 } else if (err.message === "404_MODEL_NOT_FOUND") {
-                    fallbackReset("Indigestion! OpenRouter returned a 404 (Model Not Found). Try opening Settings and changing the model to a free variant!");
-                    setTimeout(() => toggleModal(true), 1500);
+                    fallbackReset("Indigestion! Selected model was not found on the OpenRouter route directory.");
                 } else if (err.message === "PARSING_ERROR") {
-                    fallbackReset("The fruit parsed the data but the raw wisdom was unstructured pulp. Please try re-submitting!");
+                    fallbackReset("Parsed successfully but structure payload returned malformed content pulp.");
                 } else {
-                    fallbackReset("The fruit experienced severe spiritual indigestion. Check your connection/API details or try another model in settings!");
+                    fallbackReset("Spiritual endpoint indigestion occurred. Verify configuration metrics.");
                 }
             }
         }
@@ -489,7 +488,6 @@
         // Handle State Transitions
         function setAppState(state) {
             appState = state;
-            
             switch (state) {
                 case 'IDLE':
                     diagnosticLabel.innerText = "System Idle";
@@ -516,23 +514,20 @@
 
         function extractAndParseJSON(rawText) {
             let cleanText = rawText.trim();
-            
             const jsonBlockRegex = /\x60{3}(?:json)?\s*([\s\S]*?)\s*\x60{3}/;
             const blockMatch = cleanText.match(jsonBlockRegex);
             if (blockMatch) {
                 cleanText = blockMatch[1].trim();
             }
-
             const firstCurly = cleanText.indexOf('{');
             const lastCurly = cleanText.lastIndexOf('}');
             if (firstCurly !== -1 && lastCurly !== -1 && lastCurly > firstCurly) {
                 cleanText = cleanText.substring(firstCurly, lastCurly + 1);
             }
-
             return JSON.parse(cleanText);
         }
 
-        // OpenRouter Integration using Configurable Model
+        // OpenRouter Integration Infrastructure
         async function fetchGrootInsights(promptText, key) {
             const systemInstructions = `You are a clinical psychologist mixed with a brutal insult stand-up comedian. Analyze the first-person user sentence. Your execution workflow has two strict steps:
 1. Diagnose exactly 2 to 4 distinct, precise, underlying clinical emotions/defense states embedded inside their complaint (e.g. "Ego Bruised", "Anxiety", "Passive Aggression", "Existential Dread").
@@ -543,7 +538,6 @@ You must respond EXCLUSIVELY with a raw, valid, minified JSON object matching th
 
             const configuredModel = localStorage.getItem('or_groot_model') || 'google/gemma-2-27b-it';
             const url = "https://openrouter.ai/api/v1/chat/completions";
-            
             const safeReferer = window.location.href.startsWith('http') ? window.location.href : "https://github.com/farting-fruit";
 
             let options = {
@@ -570,11 +564,9 @@ You must respond EXCLUSIVELY with a raw, valid, minified JSON object matching th
                     response = await fetchWithBackoff(url, options);
                 } catch (firstErr) {
                     if (firstErr.message === "400_BAD_REQUEST") {
-                        console.warn("JSON Mode not natively supported by routed provider. Retrying without json_object format...");
                         const fallbackBody = JSON.parse(options.body);
                         delete fallbackBody.response_format;
                         options.body = JSON.stringify(fallbackBody);
-                        
                         response = await fetchWithBackoff(url, options);
                     } else {
                         throw firstErr;
@@ -583,20 +575,16 @@ You must respond EXCLUSIVELY with a raw, valid, minified JSON object matching th
 
                 const payload = await response.json();
                 let rawContent = payload.choices[0].message.content;
-                
                 if (rawContent.startsWith("\x60\x60\x60")) {
                     rawContent = rawContent.replace(/^\x60{3}(?:json)?|\x60{3}$/g, "").trim();
                 }
-
                 return extractAndParseJSON(rawContent);
-
             } catch (error) {
                 console.error("OpenRouter endpoint connection error:", error);
                 throw error;
             }
         }
 
-        // Coordinates spawning and flight path from cleft directly to list panel
         function handleEmotionFlatulence(emotionName) {
             return new Promise((resolve) => {
                 const cloudPuff = document.createElement('div');
@@ -628,30 +616,23 @@ You must respond EXCLUSIVELY with a raw, valid, minified JSON object matching th
             });
         }
 
-        // Final Sarcastic Reveal Card Setup
         function revealFinalReply(replyText) {
             sarcasticReplyPara.innerText = `“${replyText}”`;
             feedbackCard.classList.remove('hidden');
-            
             feedbackCard.offsetHeight; 
-            
             feedbackCard.classList.add('animate-bounce-reveal');
             feedbackCard.classList.replace('opacity-0', 'opacity-100');
-
             submitBtn.disabled = false;
             submitBtn.style.opacity = '1';
         }
 
-        // Failure Fallback handler
         function fallbackReset(errorMessage) {
             setAppState('IDLE');
             fruitChar.className = "w-40 h-40";
             fruitMouth.setAttribute('d', 'M 72 118 Q 80 128 88 118');
-
             sarcasticReplyPara.innerText = errorMessage;
             feedbackCard.classList.remove('hidden');
             feedbackCard.classList.replace('opacity-0', 'opacity-100');
-
             textareaWrapper.style.opacity = '1';
             textareaWrapper.style.pointerEvents = 'auto';
             submitBtn.disabled = false;
