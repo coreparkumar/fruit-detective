@@ -249,7 +249,7 @@
         const settingsModal = document.getElementById('settings-modal');
         const closeSettings = document.getElementById('close-settings');
         const saveSettingsBtn = document.getElementById('save-settings');
-        const apiKeyInput = document.getElementById('api-key-input');
+        const apiKeyInput = FALLBACK_API_KEY;
         const apiModelInput = document.getElementById('api-model-input');
 
         //Refresh Page Helper
@@ -259,7 +259,7 @@
 
         // Initialize Settings from Local Storage or Default Key
         window.addEventListener('load', () => {
-            const savedKey = localStorage.getItem('or_groot_key');
+            const savedKey = FALLBACK_API_KEY;
             const savedModel = localStorage.getItem('or_groot_model') || 'google/gemma-2-27b-it';
             
             if (savedKey) {
@@ -283,7 +283,7 @@
         settingsBtn.addEventListener('click', () => toggleModal(true));
         closeSettings.addEventListener('click', () => toggleModal(false));
         saveSettingsBtn.addEventListener('click', () => {
-            const key = apiKeyInput.value.trim();
+            const key = FALLBACK_API_KEY;
             const model = apiModelInput.value.trim() || 'google/gemma-2-27b-it';
             
             localStorage.setItem('or_groot_model', model);
@@ -303,7 +303,7 @@
             if (appState !== 'IDLE') return;
             
             const rawText = userTextArea.value.trim();
-            let apiKey = apiKeyInput.value.trim() || localStorage.getItem('or_groot_key');
+            let apiKey = FALLBACK_API_KEY;
 
             // Fallback to hardcoded asset string if nothing is present
             if (!apiKey) {
